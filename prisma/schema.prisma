@@ -21,7 +21,6 @@ model User {
   email             String    @unique @db.VarChar(255)
   password          String
   createdAt         DateTime?
-  age               String
   isAdmin           Boolean?  @default(false)
   updatedAt         DateTime?
   username          String    @db.VarChar(255)
