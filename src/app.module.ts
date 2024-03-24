@@ -6,8 +6,13 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [PrismaModule, ConfigModule.forRoot({ isGlobal: true }), UsersModule, AuthModule],
-  // controllers: [PrismaController],
+  imports: [
+    PrismaModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    UsersModule,
+    AuthModule,
+  ],
+  controllers: [],
   providers: [PrismaService],
 })
 export class AppModule {}
