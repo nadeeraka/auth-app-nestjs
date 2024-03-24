@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model Profile {
+  id     Int     @id @default(autoincrement())
+  bio    String?
+  userId Int     @unique
+  user   User    @relation(fields: [userId], references: [id])
+  type  String?
+  difficulty String?
+}
+
+model User {
+  id      Int      @id @default(autoincrement())
+  username    String  @db.VarChar(255)
+  email   String   @unique @db.VarChar(255)
+  password String
+  location String @db.VarChar(255)
+  isAdmin   Boolean?  @default(false)
+  isEnableMarketing Boolean? @default(false)
+  isWelsh Boolean?  @default(false)
+  age String
+  createdAt DateTime?
+  updatedAt DateTime?
+  isVerified Boolean @default(false)
+  isBanned Boolean @default(false)
+  isDeleted Boolean @default(false)
+  isSuspended Boolean @default(false)
+  profile Profile?
+}
+
+// model Event {
+//    id      Int      @id @default(autoincrement())
+//    name   String  @db.VarChar(255)
+//    content  String  @db.VarChar(255)
+//    location  String  @db.VarChar(255)
+//    time DateTime
+//    date DateTime
+//    image String
+//    isSuspended Boolean @default(false)
+//    guest_limit Int @default(0)
+//    userId Int     @unique
+//    user   User    @relation(fields: [userId], references: [id])
+//    createdAt DateTime @default(now())
+//    updatedAt DateTime @default(now())
+
+
+// }
+
+
+model test {
+  id      Int      @id @default(autoincrement())
+  text    String  @db.VarChar(255)
+  name    String  @db.VarChar(255)
+  value    String  @db.VarChar(255)
+
+}
