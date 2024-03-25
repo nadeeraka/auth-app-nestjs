@@ -13,7 +13,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ZodValidationPipe } from 'src/utils/common/ZodValidationPipe';
 import { createCatSchema } from './entities/zod/createUserSchema';
-import prisma from '@prisma/client'
 
 @Controller('users')
 export class UsersController {
