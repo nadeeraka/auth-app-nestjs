@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { Request, Response } from 'express';
+import { LoggerService } from './logger/logger.service';
 import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 
 type MyResponseObj = {
@@ -17,6 +18,8 @@ type MyResponseObj = {
 
 @Catch()
 export class AllExceptionsFilter extends BaseExceptionFilter {
+  private readonly logger = new LoggerService(AllExceptionsFilter.name);
+
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -29,6 +32,7 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
       response: '',
     };
 
+    // Add more Prisma Error Types if you want
     if (exception instanceof HttpException) {
       myResponseObj.statusCode = exception.getStatus();
       myResponseObj.response = exception.getResponse();
@@ -41,6 +45,8 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
     }
 
     response.status(myResponseObj.statusCode).json(myResponseObj);
+
+    this.logger.error(myResponseObj.response, AllExceptionsFilter.name);
 
     super.catch(exception, host);
   }

@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { APP_GUARD } from "@nestjs/core";
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { APP_GUARD } from "@nestjs/core";
         ttl: 60000,
         limit: 100
       }]),
+    LoggerModule,
   ],
   controllers: [],
   providers: [PrismaService,
