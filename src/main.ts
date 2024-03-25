@@ -12,10 +12,12 @@ async function bootstrap() {
     .setVersion('1.0')
     // .setBasePath('api')
     .addBearerAuth()
+
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);
-
+//   set as public api
+app.enableCors()
   await app.listen(8000);
   console.log(`Application is running on 🚀: ${await app.getUrl()}`);
 }
