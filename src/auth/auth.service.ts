@@ -1,9 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UsersService } from 'src/users/users.service';
 import { QueryService } from 'src/database/query/query.service';
-import { User, userRegister } from 'src/utils/types';
+import { User, userLogin, userRegister } from 'src/utils/types';
 
 @Injectable()
 export class AuthService {
@@ -11,6 +15,15 @@ export class AuthService {
     private userService: UsersService,
     private query: QueryService,
   ) {}
+  async login(user: userLogin) {
+    // const payload = {
+    //   email: user.email,
+    //   id: user.id,
+    // };
+    return {
+      // token: this.query.generateToken(payload),
+    };
+  }
 
   async validateUser(email: string, password: string) {
     const user: userRegister | boolean =
@@ -20,13 +33,18 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
     const isPasswordValid = await this.query.checkPassword(
-      user.password,
+      user?.password,
       password,
     );
-    return null;
+    if (isPasswordValid) {
+      return user;
+    }
+    throw new NotAcceptableException('Password is not valid');
   }
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  async create(createAuthDto: CreateAuthDto) {
+    const newUser = await this.query.createUser(createAuthDto);
+    if (!newUser) throw new NotAcceptableException('User already exists');
+    return newUser;
   }
 
   findAll() {

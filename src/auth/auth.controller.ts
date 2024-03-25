@@ -6,17 +6,31 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
+import { CreateAuthDto, LoginDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import { SkipThrottle, Throttle } from "@nestjs/throttler";
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { AuthGuard } from '@nestjs/passport';
+import { LocalAuthGuard } from './local.auth.guard';
+import { ZodValidationPipe } from 'src/utils/common/ZodValidationPipe';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { createUserSchema } from 'src/users/entities/zod/createUserSchema';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  login(@Body() loginDto: LoginDto) {
+    return this.authService.login(loginDto);
+  }
+
+  @Post('new')
+  @UsePipes(new ZodValidationPipe(createUserSchema))
   create(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.create(createAuthDto);
   }
