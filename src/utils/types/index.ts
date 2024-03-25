@@ -1,9 +1,8 @@
-export interface user {
+export interface User {
   id: number;
   email: string;
   password: string;
   createdAt: string;
-  age: string;
   isAdmin: boolean;
   updatedAt: string;
   username: string;
@@ -18,5 +17,4 @@ export interface userRegister {
   email: string;
   password: string;
   username: string;
-  age: string;
 }

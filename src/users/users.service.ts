@@ -1,29 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { QueryService } from 'src/database/query/query.service';
 
 @Injectable()
 export class UsersService {
+  constructor(private query: QueryService) {}
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.query.getUsers();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.query.getUser(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.query.updateUser(id, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    return await this.query.deleteUser(id);
   }
   async findOneByEmail(email: string) {
-    // return await this.findOne(email);
+    return await this.query.getUsersByEmail(email);
   }
 }
