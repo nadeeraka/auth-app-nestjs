@@ -23,4 +23,7 @@ export class UsersService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+  async findOneByEmail(email: string) {
+    // return await this.findOne(email);
+  }
 }
