@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { Request, Response } from 'express';
-import { LoggerService } from './logger/logger.service';
+import { LoggerService } from '../logger/logger.service';
 import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 
 type MyResponseObj = {
